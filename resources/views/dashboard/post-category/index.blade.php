@@ -28,7 +28,11 @@
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <a href="/post-category/{{ $postCategory->id }}/edit" type="button" class="btn btn-warning">Edit</a>
-                            <a href="" type="button" class="btn btn-danger">Delete</a>
+                            <form action="/post-category/{{ $postCategory['id'] }}" method="post">
+                                @csrf
+                                {{ method_field('DELETE') }}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                     </td>
                 </tr>

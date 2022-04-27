@@ -112,8 +112,14 @@ class PostCategoryController extends Controller
      * @param  \App\Models\PostCategory  $postCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PostCategory $postCategory)
+    public function destroy($id)
     {
-        //
+        $data = PostCategory::find($id);
+        if (!$data) {
+            return redirect('/post-category')->with('error', 'Data Not Found');
+        }
+        $data->delete();
+
+        return redirect('/post-category')->with('success', 'Data Deleted');
     }
 }
