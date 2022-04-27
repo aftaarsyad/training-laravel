@@ -14,8 +14,10 @@ class PostCategoryController extends Controller
      */
     public function index()
     {
+        $data = PostCategory::latest()->get();
         return view('dashboard.post-category.index', [
-            "active" => "Post Category"
+            "active" => "Post Category",
+            "data" => $data,
         ]);
     }
 
@@ -71,7 +73,11 @@ class PostCategoryController extends Controller
      */
     public function edit(PostCategory $postCategory)
     {
-        //
+        $data = PostCategory::find($postCategory['id']);
+        return view('dashboard.post-category.edit', [
+            "active" => "Form Edit Post Category",
+            "data" => $data,
+        ]);
     }
 
     /**
@@ -81,9 +87,23 @@ class PostCategoryController extends Controller
      * @param  \App\Models\PostCategory  $postCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PostCategory $postCategory)
+    public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+        $edit = PostCategory::find($id);
+        if (!$edit) {
+            return redirect('/post-category/' . $id . 'edit')->with('error', 'data not found');
+        }
+
+        $input = $request->except('_token', '_method');
+        // dd($input);
+        $edit->update($input);
+
+        if (!$edit) {
+            return redirect('/post-category/' . $id . 'edit')->with('error', 'Update Failed');
+        }
+
+        return redirect('/post-category')->with('success', 'data updated');
     }
 
     /**

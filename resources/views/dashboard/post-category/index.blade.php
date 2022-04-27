@@ -20,12 +20,19 @@
                 </tr>
                 </thead>
                 <tbody>
+                @foreach ($data as $postCategory)
                 <tr>
                     <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <td>{{ $postCategory['name'] }}</td>
+                    <td>{{ $postCategory['description'] }}</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <a href="/post-category/{{ $postCategory->id }}/edit" type="button" class="btn btn-warning">Edit</a>
+                            <a href="" type="button" class="btn btn-danger">Delete</a>
+                        </div>
+                    </td>
                 </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
