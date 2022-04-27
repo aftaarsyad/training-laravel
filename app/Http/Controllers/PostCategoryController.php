@@ -26,7 +26,9 @@ class PostCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.post-category.create', [
+            "active" => "Form Create Post Category"
+        ]);
     }
 
     /**
@@ -37,7 +39,17 @@ class PostCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'name' => 'required|max:255',
+            'description' => 'required'
+        ]);
+
+        $create = PostCategory::create($validate);
+        if (!$create) {
+            return redirect('/post-category/create')->with('error', 'Create Post Category Failed !');
+        }
+
+        return redirect('/post-category')->with('success', 'Success Created Data');
     }
 
     /**
