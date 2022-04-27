@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PostCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,8 +82,13 @@ Route::get('/post/{slug}', function ($slug) {
     ]);
 });
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
-Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::post('/logout', [LoginController::class, 'logout']);
+
+Route::resource('post-category', PostCategoryController::class)->middleware('auth');
+
+Route::get('/register', [RegisterController::class, 'index'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store']);
