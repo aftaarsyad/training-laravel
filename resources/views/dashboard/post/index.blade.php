@@ -17,6 +17,18 @@
         @endif
         <div class="col-md-8">
             <a href="/post/create" class="btn btn-info">Add New Post</a>
+
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form action="/post">
+                        <div class="input-group mb-3 mt-4">
+                            <input type="text" class="form-control" placeholder="Search" name="search" value="{{ request('search') }}">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <table class="table table-striped">
                 <thead>
                 <tr>

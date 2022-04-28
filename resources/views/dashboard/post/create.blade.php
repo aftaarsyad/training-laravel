@@ -38,7 +38,8 @@
 
                   <div class="mb-3">
                     <label for="image" class="form-label">Image</label>
-                    <input class="form-control" name="image" type="file" id="image">
+                    <img class="img-preview img-fluid col-sm-5 d-block">
+                    <input class="form-control" onChange="previewImage()" name="image" type="file" id="image">
                   </div>
 
                   <div class="mb-3">
@@ -54,4 +55,21 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function previewImage(){
+            const image = document.querySelector('#image');
+            const imgPreview = document.querySelector('.img-preview');
+
+            imgPreview.style.display = "block";
+
+            const oFReader = new FileReader();
+            oFReader.readAsDataURL(image.files[0]);
+
+            oFReader.onload = function(oFREvent) {
+                imgPreview.src = oFREvent.target.result;
+            }
+        }
+    </script>
+
 @endsection

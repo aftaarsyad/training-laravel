@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\PostCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -125,6 +126,14 @@ class PostController extends Controller
         $input = $request->except('_token', '_method');
         $input['slug'] = $this->slugyfy($input['title']);
 
+        if ($request->file('image')) {
+            $input['image'] = $request->file('image')->store('post-image');
+
+            if ($edit->image) {
+                Storage::delete($edit->image);
+            }
+        }
+
         $edit->update($input);
 
         if (!$edit) {
@@ -146,6 +155,11 @@ class PostController extends Controller
         if (!$data) {
             return redirect('/post')->with('error', 'Data Not Found');
         }
+
+        if ($data->image) {
+            Storage::delete($data->image);
+        }
+
         $data->delete();
 
         return redirect('/post')->with('success', 'Data Deleted');
