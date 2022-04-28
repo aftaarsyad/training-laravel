@@ -86,9 +86,15 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit($id)
     {
-        //
+        $edit = Post::find($id);
+        $postCategory = PostCategory::all();
+        return view('dashboard.post.edit', [
+            "active" => "Form Edit Post",
+            "edit" => $edit,
+            "postCategory" => $postCategory,
+        ]);
     }
 
     /**
