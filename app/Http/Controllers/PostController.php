@@ -16,10 +16,15 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data = Post::latest()->get();
+        $data = Post::latest();
+
+        if (request('search')) {
+            $data->where('title', 'like', '%' . request('search') . '%')
+                ->orWhere('body', 'like', '%' . request('search') . '%');
+        }
         return view('dashboard.post.index', [
             'active' => 'Post',
-            "data" => $data,
+            "data" => $data->get(),
         ]);
     }
 
