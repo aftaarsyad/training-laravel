@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\PostCategory;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -13,7 +15,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $data = Post::latest()->get();
+        return view('dashboard.post.index', [
+            'active' => 'Post',
+            "data" => $data,
+        ]);
     }
 
     /**
@@ -23,7 +29,12 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $postCategory = PostCategory::all();
+
+        return view('dashboard.post.create', [
+            'active' => 'Form Create Post',
+            'postCategory' => $postCategory,
+        ]);
     }
 
     /**
@@ -32,18 +43,39 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    function slugyfy($text)
+    {
+        $text = strtolower(trim(preg_replace('/[^A-Za-z0-9]+/', '-', $text)));
+        return $text;
+    }
+
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'title' => 'required|max:255',
+            'post_category_id' => 'required',
+            'author' => 'required',
+            'body' => 'required',
+        ]);
+
+        $validate['slug'] = $this->slugyfy($validate['title']);
+
+        $create = Post::create($validate);
+        if (!$create) {
+            return redirect('/post/create')->with('error', 'Create Post Failed !');
+        }
+
+        return redirect('/post')->with('success', 'Success Created Data');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
         //
     }
@@ -51,10 +83,10 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
         //
     }
@@ -63,10 +95,10 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
         //
     }
@@ -74,10 +106,10 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
         //
     }
