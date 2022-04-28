@@ -104,9 +104,30 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-        //
+        $edit = Post::find($id);
+        if (!$edit) {
+            return redirect('/post/' . $id . 'edit')->with('error', 'data not found');
+        }
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'post_category_id' => 'required',
+            'author' => 'required',
+            'body' => 'required',
+        ]);
+
+        $input = $request->except('_token', '_method');
+        $input['slug'] = $this->slugyfy($input['title']);
+
+        $edit->update($input);
+
+        if (!$edit) {
+            return redirect('/post')->with('error', 'Update Failed');
+        }
+
+        return redirect('/post')->with('success', 'data updated');
     }
 
     /**
@@ -115,8 +136,14 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $data = Post::find($id);
+        if (!$data) {
+            return redirect('/post')->with('error', 'Data Not Found');
+        }
+        $data->delete();
+
+        return redirect('/post')->with('success', 'Data Deleted');
     }
 }

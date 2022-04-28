@@ -3,8 +3,8 @@
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1>Form Create Post</h1>
-            <form action="/post{{ $edit['id'] }}" method="post">
+            <h1>Form Edit Post</h1>
+            <form action="/post/{{ $edit['id'] }}" method="post">
                 @csrf
                 {{ method_field('PUT') }}
                 <div class="mb-3">
@@ -46,7 +46,7 @@
                     </div>
                     @enderror
                   </div>
-                  <button type="submit" class="btn btn-primary">Create</button>
+                  <button type="submit" class="btn btn-warning">Update</button>
             </form>
         </div>
     </div>
