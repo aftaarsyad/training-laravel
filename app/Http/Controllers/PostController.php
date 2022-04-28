@@ -24,7 +24,7 @@ class PostController extends Controller
         }
         return view('dashboard.post.index', [
             'active' => 'Post',
-            "data" => $data->get(),
+            "data" => $data->paginate(1),
         ]);
     }
 
