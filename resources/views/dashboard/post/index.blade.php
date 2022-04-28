@@ -21,6 +21,7 @@
                 <thead>
                 <tr>
                     <th scope="col">No</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Title</th>
                     <th scope="col">PostCategory</th>
                     <th scope="col">Author</th>
@@ -32,6 +33,9 @@
                     @foreach ($data as $post)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
+                            <td>
+                                <img src="{{ asset('storage/' . $post->image) }}" width="100px" height="100px">
+                            </td>
                             <td>{{ $post->title }}</td>
                             <td>{{ $post->postCategory->name }}</td>
                             <td>{{ $post->author }}</td>

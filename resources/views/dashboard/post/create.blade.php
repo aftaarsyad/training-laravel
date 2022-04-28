@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h1>Form Create Post</h1>
-            <form action="/post" method="post">
+            <form action="/post" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
@@ -34,6 +34,11 @@
                         {{ $message }}
                     </div>
                     @enderror
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input class="form-control" name="image" type="file" id="image">
                   </div>
 
                   <div class="mb-3">

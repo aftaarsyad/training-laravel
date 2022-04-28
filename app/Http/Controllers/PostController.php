@@ -52,6 +52,7 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+
         $validate = $request->validate([
             'title' => 'required|max:255',
             'post_category_id' => 'required',
@@ -60,6 +61,9 @@ class PostController extends Controller
         ]);
 
         $validate['slug'] = $this->slugyfy($validate['title']);
+        if ($request->file('image')) {
+            $validate['image'] = $request->file('image')->store('post-image');
+        }
 
         $create = Post::create($validate);
         if (!$create) {
